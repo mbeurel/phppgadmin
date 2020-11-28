@@ -4,7 +4,7 @@ services:
   phppgadmin:
     restart:        always
     image:          dockage/phppgadmin:latest
-    container_name: phppgadmin
+    container_name: phppgadmin-${POSTGRESQL_NAME}
     environment:
       - PHP_PG_ADMIN_SERVER_DESC=${POSTGRESQL_NAME}
       - PHP_PG_ADMIN_SERVER_HOST=${POSTGRESQL_DOMAIN}
