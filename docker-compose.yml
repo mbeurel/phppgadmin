@@ -41,7 +41,7 @@ services:
       - "traefik.http.routers.phppgadmin-${POSTGRESQL_NAME}-https.rule=Host(`${PHPPGADMIN_DOMAIN}`)"
       - "traefik.http.routers.phppgadmin-${POSTGRESQL_NAME}-https.entryPoints=websecure"
       - "traefik.http.routers.phppgadmin-${POSTGRESQL_NAME}-https.tls=true"
-      - "traefik.http.routers.phppgadmin-${POSTGRESQL_NAME}-https.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.phppgadmin-${POSTGRESQL_NAME}-https.tls.certresolver=${CERT_RESOLVER}"
 
 networks:
   traefik:
