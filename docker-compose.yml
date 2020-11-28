@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  phppgadmin:
+    restart:        always
+    image:          dockage/phppgadmin:latest
+    container_name: phppgadmin
+    environment:
+      - PHP_PG_ADMIN_SERVER_DESC=PostgreSQL
+      - PHP_PG_ADMIN_SERVER_HOST=${POSTGRESQL_DOMAIN}
+      - PHP_PG_ADMIN_SERVER_PORT=5432
+      - PHP_PG_ADMIN_SERVER_SSL_MODE=allow
+      - PHP_PG_ADMIN_SERVER_DEFAULT_DB=template1
+      - PHP_PG_ADMIN_SERVER_PG_DUMP_PATH=/usr/bin/pg_dump
+      - PHP_PG_ADMIN_SERVER_PG_DUMPALL_PATH=/usr/bin/pg_dumpall
+      - PHP_PG_ADMIN_DEFAULT_LANG=auto
+      - PHP_PG_ADMIN_AUTO_COMPLETE=default on
+      - PHP_PG_ADMIN_EXTRA_LOGIN_SECURITY=false
+      - PHP_PG_ADMIN_OWNED_ONLY=false
+      - PHP_PG_ADMIN_SHOW_COMMENTS=true
+      - PHP_PG_ADMIN_SHOW_ADVANCED=false
+      - PHP_PG_ADMIN_SHOW_SYSTEM=false
+      - PHP_PG_ADMIN_MIN_PASSWORD_LENGTH=1
+      - PHP_PG_ADMIN_LEFT_WIDTH=200
+      - PHP_PG_ADMIN_THEME=default
+      - PHP_PG_ADMIN_SHOW_OIDS=false
+      - PHP_PG_ADMIN_MAX_ROWS=30
+      - PHP_PG_ADMIN_MAX_CHARS=50
+      - PHP_PG_ADMIN_USE_XHTML_STRICT=false
+      - PHP_PG_ADMIN_HELP_BASE=http://www.postgresql.org/docs/%s/interactive/
+      - PHP_PG_ADMIN_AJAX_REFRESH=3
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.redirect-to-https.redirectScheme.scheme=https"
+      - "traefik.http.middlewares.redirect-to-https.redirectScheme.permanent=true"
+      - "traefik.http.routers.phppgadmin.rule=Host(`${PHPPGADMIN_DOMAIN}`)"
+      - "traefik.http.routers.phppgadmin.entryPoints=web"
+      - "traefik.http.routers.phppgadmin.middlewares=redirect-to-https"
+      - "traefik.http.routers.phppgadmin-https.rule=Host(`${PHPPGADMIN_DOMAIN}`)"
+      - "traefik.http.routers.phppgadmin-https.entryPoints=websecure"
+      - "traefik.http.routers.phppgadmin-https.tls=true"
+      - "traefik.http.routers.phppgadmin-https.tls.certresolver=letsencrypt"
+
+networks:
+  traefik:
+    external:
+      name: traefik
