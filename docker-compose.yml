@@ -33,11 +33,9 @@ services:
       - traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.http.middlewares.redirect-to-https.redirectScheme.scheme=https"
-      - "traefik.http.middlewares.redirect-to-https.redirectScheme.permanent=true"
       - "traefik.http.routers.phppgadmin-${POSTGRESQL_NAME}.rule=Host(`${PHPPGADMIN_DOMAIN}`)"
       - "traefik.http.routers.phppgadmin-${POSTGRESQL_NAME}.entryPoints=web"
-      - "traefik.http.routers.phppgadmin-${POSTGRESQL_NAME}.middlewares=redirect-to-https"
+      - "traefik.http.routers.phppgadmin-${POSTGRESQL_NAME}.middlewares=redirect-to-https@file"
       - "traefik.http.routers.phppgadmin-${POSTGRESQL_NAME}-https.rule=Host(`${PHPPGADMIN_DOMAIN}`)"
       - "traefik.http.routers.phppgadmin-${POSTGRESQL_NAME}-https.entryPoints=websecure"
       - "traefik.http.routers.phppgadmin-${POSTGRESQL_NAME}-https.tls=true"
